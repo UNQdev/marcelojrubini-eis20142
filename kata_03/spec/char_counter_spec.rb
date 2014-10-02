@@ -23,7 +23,6 @@ describe 'CharCounter' do
 
   it 'should return {} when string is empty' do
     dic = CharCounter.count('')
-    debugger
     dic.size.should be 0
   end   
 

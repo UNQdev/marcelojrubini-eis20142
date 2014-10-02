@@ -1,35 +1,54 @@
 class Ahorcado
 
-	@palabra
-	@vidas
-	@estado
+	attr_accessor :palabra,:vidas,:descubiertas
 
 	def initialize(key_word)
 		@palabra = key_word
 		@vidas = 3
-		@estado = '*' * key_word.length
+		@descubiertas = inicializarDescubiertas
 	end
+
 
 	def arriesgar(char)
-		if palabra.include(char)
-			reemplazarOcurrencias(char)
+		if palabra.include? (char)
+			descubrir(char)
 		else
-			vidas = vidas -1
+			self.vidas = self.vidas-1
 		end
-		estado
 	end
 
-	def reemplazarOcurrencias(letra)
-		
+
+	def descubrir(char)
+		descubiertas[char] = true
 	end
 
-	def palabra
-		@palabra
+	def inicializarDescubiertas
+		palabra.split(//).inject({}) { |letras, char| letras.update(char => false) }
 	end
-	def vidas
-		@vidas
+
+	def printEstado
+		palabra.split(//).inject('') { |toPrint, char| descubiertas[char] ? toPrint+char : toPrint+'*' }
 	end
+
+	def quedanVidas
+		vidas > 0
+	end
+
+	def quedanLetras
+		descubiertas.has_value? (false)
+	end
+
+
 	def estado
-		@estado
-	end		
+		if quedanVidas
+			if quedanLetras
+				printEstado
+			else
+				raise 'GANASTE :D'
+			end
+		else
+			raise 'PERDISTE :('
+		end
+	end
+
 end
